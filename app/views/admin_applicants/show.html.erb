@@ -1,0 +1,23 @@
+<h1>Applicant #<%= @applicant.id %></h1>
+
+<section id="application_info">
+<%= @applicant.name %>
+<%= @applicant.street_address %>
+<%= @applicant.status %>
+</section>
+
+<section id="pending_pets">
+<% @applicant.pets.each do |pet| %>
+    <section id="pending_pet_<%=pet.id%>">
+    <%= pet.name %>
+    <%= @applicant.pet_app_status(pet.id).status %>
+    <% if @applicant.pet_app_status(pet.id).status == "Pending" %>
+        <%= form_with url: "#{@applicant.id}", method: :patch, local: true do |form| %>
+            <%= form.hidden_field :pet_id, value: pet.id %>
+            <%= form.submit "Accept" %>
+            <%= form.submit "Reject" %>
+        <% end %>
+    <% end %>
+    </section>
+<% end %>
+</section>

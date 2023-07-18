@@ -4,4 +4,8 @@ class AdminSheltersController < ApplicationController
         
     end
 
+    def show
+        
+    end
+
 end
