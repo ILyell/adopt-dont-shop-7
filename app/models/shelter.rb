@@ -24,6 +24,12 @@ class Shelter < ApplicationRecord
     pets.where(adoptable: true)
   end
 
+  def self.order_by_reverse_alphabetical
+    Shelter.find_by_sql(
+        "SELECT * FROM Shelters ORDER BY name desc;"
+      )
+  end
+
   def alphabetical_pets
     adoptable_pets.order(name: :asc)
   end

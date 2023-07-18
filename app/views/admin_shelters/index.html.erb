@@ -1,0 +1,16 @@
+<section id="ordered_shelters">
+<% Shelter.order_by_reverse_alphabetical.each do |shelter| %>
+<br>
+<%= shelter.name %>
+<% end %>
+</section>
+
+<h2> Shelters with Pending Applications </h2>
+<section id="pending_apps">
+<% Shelter.all.each do |shelter| %>
+    <% if shelter.pets.pending_applications != [] %>
+        <br>
+        <%= shelter.name %>
+    <% end %>
+<% end %>
+</section>

@@ -1,10 +1,44 @@
-<%= @applicant.name %>
-<%= @applicant.street_address%>
-<%= @applicant.city%>
-<%= @applicant.state%>
-<%= @applicant.zip_code%>
-<%= @applicant.description %>
-<%= @applicant.status %>
+<h1> Applicant #<%= @applicant.id %></h1>
+<br>
+<ul>Applicant name: <%= @applicant.name %> </ul>
+<ul>Applicant Address: <%= @applicant.street_address + ", " + @applicant.city + " " + @applicant.state + ", " + @applicant.zip_code.to_s %> </ul>
+<ul>Why you want to adopt: <%= @applicant.description %></ul>
+<ul>Application Status: <%= @applicant.status %></ul>
+<section id="pet_search">
+<% if @applicant.status == "In progress" %>
+    <h1>Add a Pet to this Application!</h1>
+    <%= form_with url: "/applicants/#{@applicant.id}", method: :get, local: true do |form| %>
+        <%= form.text_field :search %>
+        <%= form.submit "Search" %>
+    <% end %>
+<% end %>
+</section>
+
 <% @pets.each do |pet| %>
+    <br>
     <a href="/pets/<%= "#{pet.id}"%>"> <%= pet.name %> </a>
 <% end %>
+
+<section id="pet_submit">
+<% if params[:search] %>
+    <% @pet_search.each do |pet| %>
+        <%= pet.name %>
+            <%= form_with url: "/applicants/#{@applicant.id}", method: :post, local: true do |form| %>
+                <%= form.hidden_field :applicant_id, value: @applicant.id %>
+                <%= form.hidden_field :pet_id, value: pet.id %>
+                <%= form.submit "Adopt this Pet" %>
+            <% end %>
+    <% end %>
+<% end %>
+</section>
+<section id="application_submit">
+<% if @applicant.status == "In progress" && !@pets.empty? %>
+    <h1> Why Is Your Home Peferct For This Pet? </h1>
+        <%= form_with url: "/applicants/#{@applicant.id}", method: :patch, local: true do |form| %>
+            <%= form.label :description, "Why is your home a good fit?" %>
+            <%= form.text_field :description %>
+            <%= form.hidden_field :status, value: "Pending" %>
+            <%= form.button "Submit Application" %>
+        <% end %>
+<% end %>
+</section>
