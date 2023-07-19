@@ -15,4 +15,10 @@ class AdminApplicantsController < ApplicationController
             redirect_to "/admin/applicants/#{@applicant.id}"
         end
     end
+
+    private 
+
+    def admin_app_params
+        params.permit(:pet_id)
+    end
 end
